@@ -237,6 +237,8 @@ function initPrismControls() {
     });
   }
 
+    
+  
   /* Video playing / paused state */
   if (media) {
     media.addEventListener('playing', () => {
@@ -272,6 +274,8 @@ function initPrismControls() {
     });
   }
 }
+
+
 
 /* Wait for player element */
 const startPrismControls = () => {
@@ -322,3 +326,4 @@ if (prismPlayer && prismVideo) {
     prismPlayer.classList.add('prism-center-controls-hidden');
   });
 }
+

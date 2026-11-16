@@ -3285,3 +3285,252 @@
     gap: 2px !important;
   }
 }
+
+/* =================================
+   PRISM X - RESPONSIVE DESIGN
+================================= */
+
+/* Player responsive base */
+video-player {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+/* Keep all elements inside player */
+video-player *,
+video-player *::before,
+video-player *::after {
+  box-sizing: border-box;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  video-player {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  video-player {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 360px) {
+  video-player {
+    border-radius: 6px;
+  }
+}
+
+/* Landscape mobile */
+@media (max-width: 900px) and (orientation: landscape) {
+  video-player {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+
+
+/* ==========================================
+   PRISM X - MOBILE CONTROL OPTIMIZATION
+========================================== */
+
+@media (max-width: 600px) {
+
+  /* Main control buttons */
+  .media-container .media-button {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    padding: 7px !important;
+    border-radius: 50% !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Icons inside control buttons */
+  .media-container .media-button-icon,
+  .media-container .media-button-icon-base {
+    width: 17px !important;
+    height: 17px !important;
+    max-width: 17px !important;
+    max-height: 17px !important;
+  }
+
+  /* Bottom controls layout */
+  .video-controls-row {
+    gap: 5px !important;
+    padding: 0 8px 7px !important;
+  }
+
+  .video-controls-group {
+    gap: 4px !important;
+    min-width: 0 !important;
+  }
+
+  .video-controls-start {
+    gap: 4px !important;
+  }
+
+  /* Time display */
+  .media-time-group {
+    gap: 2px !important;
+    font-size: 10px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Settings text */
+  .media-settings-button-label {
+    display: none !important;
+  }
+
+  /* Center play button */
+  .video-controls-center-play {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    padding: 13px !important;
+  }
+
+  .video-controls-center-play-icon {
+    width: 25px !important;
+    height: 25px !important;
+  }
+
+  /* Center seek buttons */
+  .video-controls-center-seek {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    padding: 9px !important;
+  }
+
+  .video-controls-center-seek-icon {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  .media-seek-button-label {
+    font-size: 9px !important;
+  }
+
+  /* Top controls */
+  .video-controls-top {
+    gap: 4px !important;
+    padding: 7px 8px !important;
+  }
+
+  /* Progress bar */
+  .video-controls-slider-row {
+    padding: 0 8px !important;
+  }
+
+  /* Menus */
+  .media-menu-popup {
+    max-width: calc(100vw - 24px) !important;
+    max-height: 65vh !important;
+    overflow-y: auto !important;
+  }
+
+  /* Prevent controls from overflowing */
+  .video-controls-content {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 380px) {
+
+  .media-container .media-button {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    padding: 6px !important;
+  }
+
+  .media-container .media-button-icon,
+  .media-container .media-button-icon-base {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  .media-time-group {
+    font-size: 9px !important;
+  }
+
+  .video-controls-row {
+    gap: 3px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+
+    .media-fullscreen-button,
+  .media-captions-button {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    padding: 5px !important;
+    font-size: 14px !important;
+  }
+
+  .media-fullscreen-button media-icon,
+  .media-captions-button media-icon {
+    width: 15px !important;
+    height: 15px !important;
+    font-size: 15px !important;
+  }
+
+   .media-fullscreen-button,
+  .media-captions-button {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    max-width: 30px !important;
+    max-height: 30px !important;
+    padding: 6px !important;
+    box-sizing: border-box !important;
+    border-radius: 50% !important;
+    flex: 0 0 30px !important;
+    background-color: red;
+  }
+
+  @media (max-width: 600px) {
+  media-fullscreen-button,
+  media-captions-button {
+    background: red !important;
+    outline: 3px solid yellow !important;
+  }
+}
+
+
+}
+
+
+
+@media (max-width: 600px) {
+  .media-fullscreen-button,
+  .media-captions-button {
+    transform: scale(0.75) !important;
+    transform-origin: center !important;
+  }
+}
