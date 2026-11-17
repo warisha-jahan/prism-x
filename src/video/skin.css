@@ -3685,3 +3685,22 @@ video-player {
     clip-path: inset(0 round 20px);
   }
 }
+
+video-player {
+  display: block !important;
+  width: 100%;
+  border-radius: 30px !important;
+  overflow: hidden !important;
+  clip-path: inset(0 round 30px);
+  background: #08090d;
+  isolation: isolate;
+  outline: 2px solid #ffffff;
+  outline-offset: 0;
+}
+
+@media (max-width: 760px) {
+  video-player {
+    border-radius: 18px !important;
+    clip-path: inset(0 round 18px);
+  }
+}
