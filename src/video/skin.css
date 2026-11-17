@@ -3666,3 +3666,32 @@ body.prism-light-mode .media-skin.media-container {
     transform: none !important;
   }
 }
+
+/* PRISM X — FIX SHARP CORNERS ON WHITE BACKGROUND */
+
+.media-skin.media-container[data-theme="scaffold"][data-preset="video"] {
+  border-radius: 30px !important;
+  overflow: hidden !important;
+  isolation: isolate;
+  background-clip: padding-box;
+}
+
+.media-skin[data-theme="scaffold"][data-preset="video"]::before {
+  border-radius: inherit !important;
+  overflow: hidden;
+  clip-path: inset(0 round 30px);
+}
+
+.media-skin[data-theme="scaffold"][data-preset="video"] media-poster,
+.media-skin[data-theme="scaffold"][data-preset="video"] video {
+  border-radius: inherit !important;
+}
+
+/* Mobile corners */
+@media (max-width: 760px) {
+  .media-skin.media-container[data-theme="scaffold"][data-preset="video"],
+  .media-skin[data-theme="scaffold"][data-preset="video"]::before {
+    border-radius: 18px !important;
+    clip-path: inset(0 round 18px);
+  }
+}
