@@ -3672,9 +3672,9 @@ body.prism-light-mode .media-skin.media-container {
 video-player {
   display: block !important;
   width: 100%;
-  border-radius: 30px !important;
+  border-radius: 40px !important;
   overflow: hidden !important;
-  clip-path: inset(0 round 30px);
+  clip-path: inset(0 round 40px);
   background: #08090d;
   isolation: isolate;
 }
@@ -3682,6 +3682,6 @@ video-player {
 @media (max-width: 760px) {
   video-player {
     border-radius: 20px !important;
-    clip-path: inset(0 round 18px);
+    clip-path: inset(0 round 20px);
   }
 }
