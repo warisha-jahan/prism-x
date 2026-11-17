@@ -3667,30 +3667,20 @@ body.prism-light-mode .media-skin.media-container {
   }
 }
 
-/* PRISM X — FIX SHARP CORNERS ON WHITE BACKGROUND */
+/* PRISM X — Video Player Outer Container */
 
-.media-skin.media-container[data-theme="scaffold"][data-preset="video"] {
+video-player {
+  display: block !important;
+  width: 100%;
   border-radius: 30px !important;
   overflow: hidden !important;
-  isolation: isolate;
-  background-clip: padding-box;
-}
-
-.media-skin[data-theme="scaffold"][data-preset="video"]::before {
-  border-radius: inherit !important;
-  overflow: hidden;
   clip-path: inset(0 round 30px);
+  background: #08090d;
+  isolation: isolate;
 }
 
-.media-skin[data-theme="scaffold"][data-preset="video"] media-poster,
-.media-skin[data-theme="scaffold"][data-preset="video"] video {
-  border-radius: inherit !important;
-}
-
-/* Mobile corners */
 @media (max-width: 760px) {
-  .media-skin.media-container[data-theme="scaffold"][data-preset="video"],
-  .media-skin[data-theme="scaffold"][data-preset="video"]::before {
+  video-player {
     border-radius: 18px !important;
     clip-path: inset(0 round 18px);
   }
