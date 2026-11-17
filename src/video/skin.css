@@ -3511,17 +3511,17 @@ video-player *::after {
     box-sizing: border-box !important;
     border-radius: 50% !important;
     flex: 0 0 30px !important;
-    background-color: red;
+    /* background-color: red; */
   }
 
-  @media (max-width: 600px) {
+  /* @media (max-width: 600px) {
   media-fullscreen-button,
   media-captions-button {
     background: red !important;
     outline: 3px solid yellow !important;
   }
 }
-
+ */
 
 }
 
@@ -3532,5 +3532,137 @@ video-player *::after {
   .media-captions-button {
     transform: scale(0.75) !important;
     transform-origin: center !important;
+  }
+}
+
+
+
+/* Hide Video Title on Mobile */
+
+@media (max-width: 600px) {
+  .video-controls-top .media-title {
+    display: none !important;
+ 
+  }
+}
+
+
+/* PRISM X - Reduced Motion Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+}
+
+
+
+/* PRISM X - Theme Switcher */
+
+.prism-theme-switch {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0 18px;
+  position: relative;
+  z-index: 100;
+}
+
+#prism-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 9px 17px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50px;
+  background: rgba(25,25,32,0.85);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: all 0.25s ease;
+}
+
+#prism-theme-toggle:hover {
+  transform: translateY(-2px);
+  border-color: #a78bfa;
+  box-shadow: 0 4px 18px rgba(139,92,246,0.2);
+}
+
+.prism-theme-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.prism-sun {
+  color: #fbbf24;
+}
+
+.prism-moon {
+  color: #c4b5fd;
+}
+
+/* Light Theme */
+
+body.prism-light-mode {
+  background: #f4f5f9 !important;
+  color: #171923;
+}
+
+body.prism-light-mode #prism-theme-toggle {
+  background: rgba(255,255,255,0.9);
+  color: #171923;
+  border-color: rgba(0,0,0,0.12);
+}
+
+body.prism-light-mode .prism-sun {
+  color: #d97706;
+}
+
+body.prism-light-mode .prism-moon {
+  color: #64748b;
+}
+
+/* Player Light Surface */
+
+body.prism-light-mode .media-skin.media-container {
+  background: #ffffff !important;
+  color: #171923 !important;
+  border-color: rgba(0,0,0,0.12);
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .prism-theme-switch {
+    padding: 8px 0 12px;
+  }
+
+  #prism-theme-toggle {
+    padding: 8px 14px;
+    font-size: 11px;
+  }
+}
+
+/* Reduced Motion */
+
+@media (prefers-reduced-motion: reduce) {
+  #prism-theme-toggle {
+    transition: none !important;
+  }
+
+  #prism-theme-toggle:hover {
+    transform: none !important;
   }
 }

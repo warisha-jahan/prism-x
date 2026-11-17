@@ -1,6 +1,7 @@
 
 import '../styles/video/scaffold.css';
 import './skin.css';
+
 import '@videojs/html/i18n';
 import '@videojs/html/ui/container';
 import '@videojs/html/ui/poster';
@@ -93,6 +94,11 @@ import {
   volumeOffIcon as volumeOffIconScaffold,
 } from '@videojs/html/icons/scaffold';
 
+
+/* -----------------------------------------
+   PRISM X ICON REGISTRATION
+----------------------------------------- */
+
 registerIcons('scaffold', {
   'airplay-enter': airPlayEnterIconScaffold,
   'airplay-exit': airPlayExitIconScaffold,
@@ -120,210 +126,515 @@ registerIcons('scaffold', {
   'volume-off': volumeOffIconScaffold,
 });
 
+
 /* -----------------------------------------
-   PRISM X CONTROLS VISIBILITY
+   PRISM X TYPES
 ----------------------------------------- */
 
+type PrismMuxElement = HTMLElement & {
+  media?: HTMLMediaElement;
+};
 
+
+/* -----------------------------------------
+   PRISM X CONTROLS
+----------------------------------------- */
 
 function initPrismControls() {
-  const player = document.querySelector<HTMLElement>('.media-skin.media-container');
 
+  const player = document.querySelector<HTMLElement>(
+    '.media-skin[data-theme="scaffold"][data-preset="video"]'
+  );
 
-  if (!player) return;
+  if (!player || player.dataset.prismControlsReady) return;
 
-  const media = player.querySelector<HTMLElement>('mux-video, video');
-  const settingsMenu = player.querySelector<HTMLElement>('.media-menu-popup');
+  player.dataset.prismControlsReady = 'true';
+
+  const media = player.querySelector<HTMLElement>(
+    'mux-video, video'
+  );
+
+  const settingsMenu = player.querySelector<HTMLElement>(
+    '.media-menu-popup'
+  );
 
   let hideTimer: ReturnType<typeof setTimeout> | undefined;
+
   let pointerInsidePlayer = false;
   let pointerInsideMenu = false;
 
+
+  /* -----------------------------------------
+     SHOW CONTROLS
+  ----------------------------------------- */
+
   const clearHideTimer = () => {
+
     if (hideTimer) {
       clearTimeout(hideTimer);
       hideTimer = undefined;
     }
+
   };
 
+
   const showControls = () => {
+
     player.classList.add('prism-controls-visible');
+
     player.classList.remove('prism-controls-hidden');
+
     player.classList.remove('prism-center-controls-hidden');
 
   };
 
+
   const hideControls = () => {
+
     player.classList.remove('prism-controls-visible');
+
     player.classList.add('prism-controls-hidden');
+
   };
 
+
   const resetHideTimer = () => {
+
     clearHideTimer();
 
     if (pointerInsideMenu) return;
 
     hideTimer = setTimeout(() => {
+
       hideControls();
+
     }, 2000);
+
   };
 
-  /* Initial load: show controls */
+
+  /* -----------------------------------------
+     INITIAL CONTROLS
+  ----------------------------------------- */
+
   showControls();
-  // resetHideTimer();
 
-  /* Mouse enters player */
+
+  /* -----------------------------------------
+     POINTER ENTER
+  ----------------------------------------- */
+
   player.addEventListener('pointerenter', (event) => {
+
     if (event.pointerType === 'touch') return;
 
     pointerInsidePlayer = true;
+
     showControls();
+
     resetHideTimer();
+
   });
 
-  /* Mouse moves inside player */
+
+  /* -----------------------------------------
+     POINTER MOVE
+  ----------------------------------------- */
+
   player.addEventListener('pointermove', (event) => {
+
     if (event.pointerType === 'touch') return;
 
     pointerInsidePlayer = true;
+
     showControls();
+
     resetHideTimer();
+
   });
 
-  /* Mouse leaves player */
+
+  /* -----------------------------------------
+     POINTER LEAVE
+  ----------------------------------------- */
+
   player.addEventListener('pointerleave', (event) => {
+
     if (event.pointerType === 'touch') return;
 
     pointerInsidePlayer = false;
 
     const nextTarget = event.relatedTarget as Node | null;
 
-    if (settingsMenu && nextTarget && settingsMenu.contains(nextTarget)) {
+    if (
+      settingsMenu &&
+      nextTarget &&
+      settingsMenu.contains(nextTarget)
+    ) {
+
       pointerInsideMenu = true;
+
       showControls();
+
       clearHideTimer();
+
       return;
+
     }
 
     clearHideTimer();
 
     if (!pointerInsideMenu) {
+
       hideControls();
+
     }
+
   });
 
-  /* Settings dropdown protection */
+
+  /* -----------------------------------------
+     SETTINGS MENU PROTECTION
+  ----------------------------------------- */
+
   if (settingsMenu) {
+
     settingsMenu.addEventListener('pointerenter', () => {
+
       pointerInsideMenu = true;
+
       showControls();
+
       clearHideTimer();
+
     });
 
+
     settingsMenu.addEventListener('pointerleave', (event) => {
+
       pointerInsideMenu = false;
 
       const nextTarget = event.relatedTarget as Node | null;
 
       if (nextTarget && player.contains(nextTarget)) {
+
         pointerInsidePlayer = true;
+
         showControls();
+
         resetHideTimer();
+
       } else {
+
         pointerInsidePlayer = false;
+
         clearHideTimer();
+
         hideControls();
+
       }
+
     });
+
   }
 
-    
-  
-  /* Video playing / paused state */
-  if (media) {
-    media.addEventListener('playing', () => {
-      console.log('VIDEO PLAYING EVENT FIRED');
-      console.log('MEDIA ELEMENT:', media);
-      console.log('PLAYER CLASS:', player.className);
-      console.log(
-        'CENTER ELEMENT:',
-        player.querySelector('.video-controls-center')
-      );
 
-      console.log(
-        'CENTER COUNT:',
-        player.querySelectorAll('.video-controls-center').length
-      );
+  /* -----------------------------------------
+     VIDEO PLAYING / PAUSED
+  ----------------------------------------- */
+
+  if (media) {
+
+    media.addEventListener('playing', () => {
 
       player.classList.add('prism-is-playing');
+
       player.classList.add('prism-center-controls-hidden');
+
     });
+
 
     media.addEventListener('play', () => {
+
       player.classList.add('prism-center-controls-hidden');
+
     });
+
 
     media.addEventListener('pause', () => {
+
       player.classList.remove('prism-is-playing');
+
       showControls();
+
     });
 
+
     media.addEventListener('ended', () => {
+
       player.classList.remove('prism-is-playing');
+
       showControls();
+
     });
+
   }
+
+
+  /* -----------------------------------------
+     PRISM X KEYBOARD ACCESSIBILITY
+  ----------------------------------------- */
+
+  player.setAttribute('tabindex', '0');
+
+
+  // Get the actual Mux media element dynamically.
+  // It may not be ready immediately when the player loads.
+
+  const getMedia = (): HTMLMediaElement | null => {
+
+    const mux = player.querySelector(
+      'mux-video'
+    ) as PrismMuxElement | null;
+
+    return mux?.media ?? null;
+
+  };
+
+
+  // Attempt initial focus without scrolling.
+  // Browsers may restrict automatic focus.
+
+  requestAnimationFrame(() => {
+
+    if (document.activeElement === document.body) {
+
+      player.focus({
+        preventScroll: true
+      });
+
+    }
+
+  });
+
+
+  /* -----------------------------------------
+     KEYBOARD SHORTCUTS
+  ----------------------------------------- */
+
+  document.addEventListener('keydown', (event) => {
+
+    if (!player.isConnected) return;
+
+
+    const target = event.target as HTMLElement;
+
+
+    // Don't interfere with typing.
+
+    if (
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLTextAreaElement ||
+      target.isContentEditable
+    ) {
+
+      return;
+
+    }
+
+
+    // Don't interfere with browser shortcuts.
+
+    if (
+      event.ctrlKey ||
+      event.altKey ||
+      event.metaKey
+    ) {
+
+      return;
+
+    }
+
+
+    const active = document.activeElement;
+
+
+    // Only work when the page or player has focus.
+
+    if (
+      active !== document.body &&
+      active !== document.documentElement &&
+      active !== player &&
+      !player.contains(active)
+    ) {
+
+      return;
+
+    }
+
+
+    const video = getMedia();
+
+    if (!video) return;
+
+
+    switch (event.code) {
+
+      /* SPACE: PLAY / PAUSE */
+
+      case 'Space': {
+
+        // Preserve native button behaviour.
+
+        if (
+          target !== player &&
+          target.closest('button')
+        ) {
+
+          return;
+
+        }
+
+        event.preventDefault();
+
+        if (video.paused) {
+
+          video.play().catch((error) => {
+
+            console.warn(
+              'PRISM X playback error:',
+              error
+            );
+
+          });
+
+        } else {
+
+          video.pause();
+
+        }
+
+        break;
+
+      }
+
+
+      /* LEFT ARROW: BACKWARD 10 SECONDS */
+
+      case 'ArrowLeft': {
+
+        // Let sliders and buttons use their own keyboard controls.
+
+        if (
+          target !== player &&
+          target.closest(
+            'button, [role="slider"], input'
+          )
+        ) {
+
+          return;
+
+        }
+
+        event.preventDefault();
+
+        video.currentTime = Math.max(
+          0,
+          video.currentTime - 10
+        );
+
+        break;
+
+      }
+
+
+      /* RIGHT ARROW: FORWARD 10 SECONDS */
+
+      case 'ArrowRight': {
+
+        if (
+          target !== player &&
+          target.closest(
+            'button, [role="slider"], input'
+          )
+        ) {
+
+          return;
+
+        }
+
+        event.preventDefault();
+
+        video.currentTime = Math.min(
+          Number.isFinite(video.duration)
+            ? video.duration
+            : Infinity,
+          video.currentTime + 10
+        );
+
+        break;
+
+      }
+
+    }
+
+  });
+
+
+  console.log('PRISM X controls and keyboard initialized');
+
 }
 
 
+/* -----------------------------------------
+   WAIT FOR PLAYER
+----------------------------------------- */
 
-/* Wait for player element */
 const startPrismControls = () => {
-  const observer = new MutationObserver(() => {
-    const player = document.querySelector(
+
+  const findPlayer = () => {
+
+    return document.querySelector(
       '.media-skin[data-theme="scaffold"][data-preset="video"]'
     );
 
-    if (player) {
+  };
+
+
+  const observer = new MutationObserver(() => {
+
+    if (findPlayer()) {
+
       observer.disconnect();
+
       initPrismControls();
+
     }
+
   });
+
 
   observer.observe(document.documentElement, {
+
     childList: true,
+
     subtree: true
+
   });
 
-  // Check if player already exists
-  if (
-    document.querySelector(
-      '.media-skin[data-theme="scaffold"][data-preset="video"]'
-    )
-  ) {
+
+  // Player may already exist.
+
+  if (findPlayer()) {
+
     observer.disconnect();
+
     initPrismControls();
+
   }
+
 };
 
+
 startPrismControls();
-
-
-/* Hide center controls immediately when video starts */
-
-const prismPlayer = document.querySelector<HTMLElement>(
-  '.media-skin.media-container'
-);
-
-const prismVideo = prismPlayer?.querySelector<HTMLElement>('mux-video, video');
-
-if (prismPlayer && prismVideo) {
-  prismVideo.addEventListener('playing', () => {
-    prismPlayer.classList.add('prism-center-controls-hidden');
-  });
-
-  prismVideo.addEventListener('play', () => {
-    prismPlayer.classList.add('prism-center-controls-hidden');
-  });
-}
 
