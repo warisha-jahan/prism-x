@@ -3681,7 +3681,7 @@ video-player {
 
 @media (max-width: 760px) {
   video-player {
-    border-radius: 18px !important;
+    border-radius: 20px !important;
     clip-path: inset(0 round 18px);
   }
 }
